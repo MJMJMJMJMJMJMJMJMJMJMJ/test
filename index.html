@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>전자서명 시스템 이동 중</title>
+  <script>
+    // 1. 실제 구글 앱 스크립트 배포 URL (/exec 주소)
+    var targetUrl = "https://script.google.com/macros/s/AKfycbzrTglJyNyIKzsGV3-JuqqkJ9KzxUa1xVrPF_M7nC0EVQksMe9zdbaHFB-zPphzwS9bJA/exec";
+
+    // 2. 카카오톡, 삼성 메시지, 문자 앱 등의 인앱 브라우저 감지
+    var userAgent = navigator.userAgent.toLowerCase();
+    
+    // 안드로이드 문자 인앱 브라우저에서 외부 브라우저(Chrome) 강제 호출 스키마
+    if (userAgent.indexOf("android") > -1) {
+      if (userAgent.indexOf("kakaotalk") > -1 || userAgent.indexOf("samsungbrowser") === -1 && userAgent.indexOf("chrome") > -1) {
+        // intent 스키마를 사용하여 구글 크롬 브라우저 앱을 직접 강제로 켭니다.
+        var intentUrl = "intent://" + targetUrl.replace(/https?:\/\//i, "") + "#Intent;scheme=https;package=com.android.chrome;end";
+        location.href = intentUrl;
+      } else {
+        location.href = targetUrl;
+      }
+    } 
+    // 아이폰(iOS) 접속 시
+    else if (userAgent.indexOf("iphone") > -1 || userAgent.indexOf("ipad") > -1) {
+      // iOS 인앱 브라우저 탈출 후 정식 이동
+      location.href = targetUrl;
+    } 
+    // 기타(PC 등)
+    else {
+      location.href = targetUrl;
+    }
+  </script>
+</head>
+<body style="display:flex; justify-content:center; align-items:center; height:100vh; font-family:sans-serif; background-color:#f8f9fa;">
+  <div style="text-align:center;">
+    <p style="font-size:16px; color:#333; font-weight:bold;">전자서명 시스템으로 이동 중입니다...</p>
+    <p style="font-size:13px; color:#666;">화면이 멈춰있다면 <a id="manualLink" href="#">[여기]</a>를 눌러주세요.</p>
+  </div>
+
+  <script>
+    document.getElementById("manualLink").href = targetUrl;
+  </script>
+</body>
+</html>
